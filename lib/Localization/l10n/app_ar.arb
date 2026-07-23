@@ -1,16 +1,21 @@
 {
-
-"chooseLanguage": "اختر اللغة",
-"session": "الجلسة",
-"total":"المجموع الخاص بك {amount} ليرة",
-
-
-"home":"  الصفحة الرئيسية ",
-
-"profile":" الملف الشخصي ",
-
-"setting":" الإعدادات  "
-
-
-
+  "@@locale": "ar",
+  "chooseLanguage": "اختر اللغة",
+  "session": "الجلسة",
+  "total": "إجمالي المبلغ هو {amount} دولار",
+  "@total": {
+    "description": "يعرض المبلغ الإجمالي"
+  },
+  "home": "الرئيسية",
+  "profile": "الملف الشخصي",
+  "setting": "الإعدادات",
+  "landingText1": "القهوة أولاً ثم نتحدث !",
+  "landingPrefix2": "اشرب ",
+  "landingHighlight2": "رشفة واحدة",
+  "landingSuffix2": " واستمتع",
+  "landingPrefix3": "حتى ",
+  "landingHighlight3": "القهوة",
+  "landingSuffix3": " ستجعل الابتسامة تشرق :)",
+  "next": "التالي",
+  "getStarted": "ابدأ الآن"
 }

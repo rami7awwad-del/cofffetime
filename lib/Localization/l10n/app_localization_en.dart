@@ -15,8 +15,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get session => 'Session';
 
   @override
-  String total(Object ammount, Object amount) {
-    return 'Your Total is $ammount Dollars ';
+  String total(Object amount) {
+    return 'Your Total is $amount Dollars';
   }
 
   @override
@@ -27,4 +27,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get setting => 'Setting';
+
+  @override
+  String get landingText1 => 'coffee first then talk !';
+
+  @override
+  String get landingPrefix2 => 'just one ';
+
+  @override
+  String get landingHighlight2 => 'sip';
+
+  @override
+  String get landingSuffix2 => ' and feel good';
+
+  @override
+  String get landingPrefix3 => 'so ';
+
+  @override
+  String get landingHighlight3 => 'chafe';
+
+  @override
+  String get landingSuffix3 => ' will make you smile :)';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get getStarted => 'Get Started';
 }

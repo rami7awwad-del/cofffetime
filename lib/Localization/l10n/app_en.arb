@@ -1,16 +1,21 @@
 {
-
-"chooseLanguage": "Choose Language",
-
-"session": "Session",
-
-"total":"Your Total is {ammount} Dollars ",
-
-
-"home":"Home",
-
-"profile":"Profile",
-
-"setting":"Setting"
-
+  "@@locale": "en",
+  "chooseLanguage": "Choose Language",
+  "session": "Session",
+  "total": "Your Total is {amount} Dollars",
+  "@total": {
+    "description": "Shows total amount"
+  },
+  "home": "Home",
+  "profile": "Profile",
+  "setting": "Setting",
+  "landingText1": "coffee first then talk !",
+  "landingPrefix2": "just one ",
+  "landingHighlight2": "sip",
+  "landingSuffix2": " and feel good",
+  "landingPrefix3": "so ",
+  "landingHighlight3": "chafe",
+  "landingSuffix3": " will make you smile :)",
+  "next": "Next",
+  "getStarted": "Get Started"
 }

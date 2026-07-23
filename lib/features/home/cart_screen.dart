@@ -1,4 +1,6 @@
 import 'package:coffee_project/core/Classes/CartItem.dart';
+import 'package:coffee_project/core/routing/app_routes.dart';
+import 'package:coffee_project/core/widgets/qty_button.dart';
 import 'package:coffee_project/features/auth/profile_screen.dart';
 import 'package:coffee_project/features/home/Screen/orderhistory_screen.dart';
 import 'package:coffee_project/features/home/Screen/paymentscreen.dart';
@@ -6,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:coffee_project/core/resources/app_colors.dart';
 import 'package:coffee_project/core/resources/text_style.dart';
-
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -16,8 +17,7 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-
-  final List<CartItem> _cartList = [
+  final List<CartItem> cartList = [
     CartItem(
       id: '1',
       name: 'Cappuccino',
@@ -47,10 +47,9 @@ class _CartScreenState extends State<CartScreen> {
     ),
   ];
 
-  
-  double get _overallTotal {
+  double get overallTotal {
     double total = 0.0;
-    for (var item in _cartList) {
+    for (var item in cartList) {
       total += item.totalPrice;
     }
     return total;
@@ -63,22 +62,14 @@ class _CartScreenState extends State<CartScreen> {
         backgroundColor: darkGreenColor,
         body: Column(
           children: [
-           
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                 
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              const OrderHistoryScreen(), 
-                        ),
-                      );
+                      Navigator.pushNamed(context, AppRoutes.order);
                     },
                     child: Container(
                       padding: EdgeInsets.all(8.r),
@@ -87,8 +78,7 @@ class _CartScreenState extends State<CartScreen> {
                         borderRadius: BorderRadius.circular(10.r),
                       ),
                       child: Icon(
-                        Icons
-                            .grid_view_rounded, 
+                        Icons.grid_view_rounded,
                         color: textHint,
                         size: 20.sp,
                       ),
@@ -98,21 +88,15 @@ class _CartScreenState extends State<CartScreen> {
                     "Cart",
                     style: TextStyles.interSize24.withColor(appWhiteColor),
                   ),
-                  
+
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              const EditProfileScreen(),
-                        ),
-                      );
+                      Navigator.pushNamed(context, AppRoutes.profile);
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10.r),
                       child: Image.asset(
-                        'assets/images/16.png', 
+                        'assets/images/16.png',
                         width: 30.w,
                         height: 30.h,
                         fit: BoxFit.contain,
@@ -123,13 +107,12 @@ class _CartScreenState extends State<CartScreen> {
               ),
             ),
 
-          
             Expanded(
               child: ListView.builder(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                itemCount: _cartList.length,
+                itemCount: cartList.length,
                 itemBuilder: (context, index) {
-                  final item = _cartList[index];
+                  final item = cartList[index];
                   final isMultiSize = item.selectedSizesQty.length > 1;
 
                   return Container(
@@ -141,7 +124,6 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                     child: Column(
                       children: [
-                        
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -149,8 +131,8 @@ class _CartScreenState extends State<CartScreen> {
                               borderRadius: BorderRadius.circular(16.r),
                               child: Image.asset(
                                 item.imageUrl,
-                                width: isMultiSize ? 100.w : 120.w,
-                                height: isMultiSize ? 100.h : 120.h,
+                                width: 126.w,
+                                height: 126.h,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -161,7 +143,7 @@ class _CartScreenState extends State<CartScreen> {
                                 children: [
                                   Text(
                                     item.name,
-                                    style: TextStyles.poppinsSize18.withColor(
+                                    style: TextStyles.interSize15.withColor(
                                       appWhiteColor,
                                     ),
                                   ),
@@ -173,7 +155,6 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                   SizedBox(height: 8.h),
 
-                                  
                                   if (!isMultiSize) ...[
                                     Row(
                                       children: [
@@ -209,10 +190,10 @@ class _CartScreenState extends State<CartScreen> {
                                       ],
                                     ),
                                     SizedBox(height: 10.h),
-                                    
+
                                     Row(
                                       children: [
-                                        _buildQtyButton(Icons.remove, () {
+                                        QtyButton(icon:Icons.remove, onTap: () {
                                           setState(() {
                                             final key = item
                                                 .selectedSizesQty
@@ -247,7 +228,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 .withColor(appWhiteColor),
                                           ),
                                         ),
-                                        _buildQtyButton(Icons.add, () {
+                                        QtyButton(icon:Icons.add, onTap: () {
                                           setState(() {
                                             final key = item
                                                 .selectedSizesQty
@@ -260,7 +241,6 @@ class _CartScreenState extends State<CartScreen> {
                                       ],
                                     ),
                                   ] else ...[
-                                    
                                     Container(
                                       padding: EdgeInsets.symmetric(
                                         horizontal: 12.w,
@@ -286,7 +266,6 @@ class _CartScreenState extends State<CartScreen> {
                           ],
                         ),
 
-                        
                         if (isMultiSize) ...[
                           SizedBox(height: 15.h),
                           ...item.selectedSizesQty.keys.map((size) {
@@ -294,7 +273,6 @@ class _CartScreenState extends State<CartScreen> {
                               padding: EdgeInsets.symmetric(vertical: 6.h),
                               child: Row(
                                 children: [
-                                  
                                   Container(
                                     width: 50.w,
                                     padding: EdgeInsets.symmetric(
@@ -329,7 +307,7 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                   const Spacer(),
                                   // زر الناقص
-                                  _buildQtyButton(Icons.remove, () {
+                                  QtyButton( icon:Icons.remove,onTap: () {
                                     setState(() {
                                       if (item.selectedSizesQty[size]! > 0) {
                                         item.selectedSizesQty[size] =
@@ -360,12 +338,16 @@ class _CartScreenState extends State<CartScreen> {
                                     ),
                                   ),
                                   // زر الزائد
-                                  _buildQtyButton(Icons.add, () {
-                                    setState(() {
-                                      item.selectedSizesQty[size] =
-                                          item.selectedSizesQty[size]! + 1;
-                                    });
-                                  }),
+                                  QtyButton(
+                                    icon: Icons.add,
+                                    onTap: () {
+                                      setState(() {
+                                        item.selectedSizesQty[size] =
+                                            (item.selectedSizesQty[size] ?? 0) +
+                                            1;
+                                      });
+                                    },
+                                  ),
                                 ],
                               ),
                             );
@@ -378,7 +360,6 @@ class _CartScreenState extends State<CartScreen> {
               ),
             ),
 
-           
             Container(
               padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 20.h),
               decoration: BoxDecoration(color: appPrimaryColor),
@@ -403,7 +384,7 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                           ),
                           Text(
-                            _overallTotal.toStringAsFixed(2),
+                            overallTotal.toStringAsFixed(2),
                             style: TextStyles.poppinsSize15.withColor(
                               appWhiteColor,
                             ),
@@ -412,16 +393,14 @@ class _CartScreenState extends State<CartScreen> {
                       ),
                     ],
                   ),
-                 
+
                   GestureDetector(
                     onTap: () {
-                     
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => PaymentScreen(
-                            totalPrice: _overallTotal, 
-                        ),
+                          builder: (context) =>
+                              PaymentScreen(totalPrice: overallTotal),
                         ),
                       );
                     },
@@ -448,22 +427,5 @@ class _CartScreenState extends State<CartScreen> {
         ),
       ),
     );
-  }
-
-  
-  Widget _buildQtyButton(IconData icon, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(8.r),
-      child: Container(
-        width: 30.w,
-        height: 30.h,
-        decoration: BoxDecoration(
-          color: goldAccentColor,
-          borderRadius: BorderRadius.circular(8.r),
-        ),
-        child: Icon(icon, color: bak, size: 16.sp),
-      ),
-    );
-  }
+  }  
 }

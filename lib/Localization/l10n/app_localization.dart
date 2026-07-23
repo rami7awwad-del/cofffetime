@@ -110,11 +110,11 @@ abstract class AppLocalizations {
   /// **'Session'**
   String get session;
 
-  /// No description provided for @total.
+  /// Shows total amount
   ///
   /// In en, this message translates to:
-  /// **'Your Total is {ammount} Dollars '**
-  String total(Object ammount, Object amount);
+  /// **'Your Total is {amount} Dollars'**
+  String total(Object amount);
 
   /// No description provided for @home.
   ///
@@ -133,6 +133,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Setting'**
   String get setting;
+
+  /// No description provided for @landingText1.
+  ///
+  /// In en, this message translates to:
+  /// **'coffee first then talk !'**
+  String get landingText1;
+
+  /// No description provided for @landingPrefix2.
+  ///
+  /// In en, this message translates to:
+  /// **'just one '**
+  String get landingPrefix2;
+
+  /// No description provided for @landingHighlight2.
+  ///
+  /// In en, this message translates to:
+  /// **'sip'**
+  String get landingHighlight2;
+
+  /// No description provided for @landingSuffix2.
+  ///
+  /// In en, this message translates to:
+  /// **' and feel good'**
+  String get landingSuffix2;
+
+  /// No description provided for @landingPrefix3.
+  ///
+  /// In en, this message translates to:
+  /// **'so '**
+  String get landingPrefix3;
+
+  /// No description provided for @landingHighlight3.
+  ///
+  /// In en, this message translates to:
+  /// **'chafe'**
+  String get landingHighlight3;
+
+  /// No description provided for @landingSuffix3.
+  ///
+  /// In en, this message translates to:
+  /// **' will make you smile :)'**
+  String get landingSuffix3;
+
+  /// No description provided for @next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// No description provided for @getStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get getStarted;
 }
 
 class _AppLocalizationsDelegate

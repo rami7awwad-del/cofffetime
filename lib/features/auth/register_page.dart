@@ -1,5 +1,10 @@
 import 'package:coffee_project/core/resources/app_colors.dart';
 import 'package:coffee_project/core/resources/text_style.dart';
+import 'package:coffee_project/core/widgets/customButton.dart';
+import 'package:coffee_project/core/widgets/loginFormCard.dart';
+import 'package:coffee_project/core/widgets/loginHeaderAvatar.dart';
+import 'package:coffee_project/features/main_layout/main_layout.dart';
+import 'package:coffee_project/core/routing/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -12,9 +17,11 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
   bool _obscureText = true;
   String selectedCountryCode = '+963';
 
@@ -33,352 +40,106 @@ class _RegisterPageState extends State<RegisterPage> {
     {'code': '+973', 'flag': '🇧🇭', 'name': 'Bahrain'},
   ];
 
+  // ===== شروط التحقق (Validators) =====
+  String? _validatePhone(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Please enter phone number';
+    }
+    if (value.trim().length != 10 || !RegExp(r'^[0-9]+$').hasMatch(value.trim())) {
+      return 'Phone number must be 10 digits';
+    }
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter password';
+    }
+    if (value.length < 8) {
+      return 'Password must be at least 8 characters';
+    }
+    return null;
+  }
+
+  void _onRegister() {
+    // تفعيل فحص الشروط قبل إنشاء الحساب
+    if (_formKey.currentState!.validate()) {
+      String username = usernameController.text;
+      String phone = phoneController.text;
+      String password = passwordController.text;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Account created successfully for $username!',
+            style: TextStyles.interSize15.withColor(appWhiteColor),
+          ),
+          backgroundColor: successColor,
+          duration: const Duration(seconds: 2),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+
+      print('Username: $username');
+      print('Phone: $selectedCountryCode $phone');
+      print('Password: $password');
+
+      Navigator.pushNamed(
+        context,AppRoutes.mainLayout
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: appBackgroundColor,
       body: Form(
         key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: 60.h),
-     
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Center(
-                  child: Container(
-                    height: 390.h,
-                    width: 338.w,
-                    decoration: BoxDecoration(
-                      color: const Color(0xff60735F),
-                      borderRadius: BorderRadius.circular(16.r), // زوايا أكثر نعومة وانسيابية
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                       
-                          Text(
-                            'User Name',
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white.withOpacity(0.9),
-                            ),
-                          ),
-                          SizedBox(height: 4.h),
-                          TextFormField(
-                            controller: usernameController,
-                            style: TextStyle(
-                              fontSize: 15.sp,
-                              color: Colors.white,
-                            ),
-                            cursorColor: Colors.white,
-                            decoration: InputDecoration(
-                              border: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.white.withOpacity(0.3),
-                                ),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.white.withOpacity(0.3),
-                                ),
-                              ),
-                              focusedBorder: const UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.white,
-                                  width: 1.5,
-                                ),
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 8.h,
-                                horizontal: 0,
-                              ),
-                              filled: false,
-                            ),
-                          ),
-                          
-                          SizedBox(height: 18.h),
-                          
-                          Text(
-                            'Phone',
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white.withOpacity(0.9),
-                            ),
-                          ),
-                          SizedBox(height: 4.h),
-                          Row(
-                            children: [
-                              
-                              Container(
-                                height: 44.h,
-                                padding: EdgeInsets.symmetric(horizontal: 4.w),
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: Colors.white.withOpacity(0.3),
-                                    ),
-                                  ),
-                                ),
-                                child: DropdownButton<String>(
-                                  value: selectedCountryCode,
-                                  dropdownColor: const Color(0xff60735F), // جعل خلفية القائمة متناسقة مع الكارد
-                                  icon: Icon(
-                                    Icons.arrow_drop_down,
-                                    color: Colors.white,
-                                    size: 22.sp,
-                                  ),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  underline: const SizedBox(),
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      selectedCountryCode = newValue!;
-                                    });
-                                  },
-                                  items: countries.map<DropdownMenuItem<String>>(
-                                    (Map<String, String> country) {
-                                      return DropdownMenuItem<String>(
-                                        value: country['code'],
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              country['flag'] ?? '🏳️',
-                                              style: TextStyle(
-                                                fontSize: 18.sp,
-                                              ),
-                                            ),
-                                            SizedBox(width: 6.w),
-                                            Text(
-                                              country['code'] ?? '',
-                                              style: TextStyle(
-                                                fontSize: 14.sp,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ).toList(),
-                                ),
-                              ),
-                              SizedBox(width: 12.w),
-                              // رقم الهاتف
-                              Expanded(
-                                child: TextFormField(
-                                  controller: phoneController,
-                                  keyboardType: TextInputType.phone,
-                                  style: TextStyle(
-                                    fontSize: 15.sp,
-                                    color: Colors.white,
-                                  ),
-                                  cursorColor: Colors.white,
-                                  decoration: InputDecoration(
-                                    hintText: '996 567 879',
-                                    hintStyle: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: Colors.white.withOpacity(0.4),
-                                    ),
-                                    border: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.white.withOpacity(0.3),
-                                      ),
-                                    ),
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.white.withOpacity(0.3),
-                                      ),
-                                    ),
-                                    focusedBorder: const UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.white,
-                                        width: 1.5,
-                                      ),
-                                    ),
-                                    contentPadding: EdgeInsets.symmetric(
-                                      vertical: 8.h,
-                                      horizontal: 0,
-                                    ),
-                                    filled: false,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          
-                          SizedBox(height: 18.h),
-                          
-                          // ===== Password =====
-                          Text(
-                            'Password',
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white.withOpacity(0.9),
-                            ),
-                          ),
-                          SizedBox(height: 4.h),
-                          TextFormField(
-                            controller: passwordController,
-                            obscureText: _obscureText,
-                            style: TextStyle(
-                              fontSize: 15.sp,
-                              color: Colors.white,
-                            ),
-                            cursorColor: Colors.white,
-                            decoration: InputDecoration(
-                              border: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.white.withOpacity(0.3),
-                                ),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.white.withOpacity(0.3),
-                                ),
-                              ),
-                              focusedBorder: const UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.white,
-                                  width: 1.5,
-                                ),
-                              ),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _obscureText ? Icons.visibility_off : Icons.visibility,
-                                  color: Colors.white.withOpacity(0.6),
-                                  size: 18.sp,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _obscureText = !_obscureText;
-                                  });
-                                },
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 8.h,
-                                horizontal: 0,
-                              ),
-                              filled: false,
-                            ),
-                          ),
-                        ],
-                      ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 120.h),
+
+              // Stack الحاوية والصورة العلوية
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Center(
+                    child: LoginFormCard(
+                      usernameController: usernameController,
+                      phoneController: phoneController,
+                      passwordController: passwordController,
+                      selectedCountryCode: selectedCountryCode,
+                      countries: countries,
+                      onCountryChanged: (val) =>
+                          setState(() => selectedCountryCode = val!),
+                      obscureText: _obscureText,
+                      onTogglePassword: () =>
+                          setState(() => _obscureText = !_obscureText),
+                      phoneValidator: _validatePhone,
+                      passwordValidator: _validatePassword,
                     ),
                   ),
-                ),
-                // الصورة الدائرية العلوية
-                Positioned(
-                  top: -45.h,
-                  left: 0,
-                  right: 0,
-                  child: Center(
-                    child: Container(
-                      width: 90.r,
-                      height: 90.r,
-                      decoration: BoxDecoration(
-                        color: darkBeigeColor,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.15),
-                            blurRadius: 8,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: ClipOval(
-                        child: Image.asset(
-                          "assets/images/Group 1171274900.png",
-                          height: 90.h,
-                          width: 90.w,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => Center(
-                            child: Icon(
-                              Icons.coffee,
-                              size: 45.sp,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            
-            SizedBox(height: 40.h),
-            
-            // ===== زر Register =====
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: SizedBox(
-                width: double.infinity,
-                height: 52.h, 
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: appPrimaryColor,
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.r), 
-                    ),
-                  ),
-                  onPressed: () {
-                    String username = usernameController.text;
-                    String phone = phoneController.text;
-                    String password = passwordController.text;
-                    
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Welcome $username!',
-                          style: TextStyle(fontSize: 15.sp),
-                        ),
-                        backgroundColor: Colors.green,
-                        duration: const Duration(seconds: 2),
-                        behavior: SnackBarBehavior.floating,
-                      ),
-                    );
-                    
-                    print('Username: $username');
-                    print('Phone: $selectedCountryCode $phone');
-                    print('Password: $password');
-                  },
-                  child: Text(
-                    "Register",
-                    textAlign: TextAlign.center,
-                    style: TextStyles.interSize18.copyWith(
-                      color: appWhiteColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+                  const LoginHeaderAvatar(),
+                ],
               ),
-            ),
-            
-            SizedBox(height: 16.h),
-          ],
+
+              SizedBox(height: 35.h),
+
+              // زر Register الموحد
+              CustomButton(
+                text: "Register",
+                onPressed: _onRegister,
+                backgroundColor: appPrimaryColor,
+                textColor: appWhiteColor,
+              ),
+
+              SizedBox(height: 20.h),
+            ],
+          ),
         ),
       ),
     );
