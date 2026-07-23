@@ -1,3 +1,5 @@
+import 'package:coffee_project/Admain/admain_page.dart';
+import 'package:coffee_project/Admain/loginAdmain_page.dart';
 import 'package:coffee_project/core/Classes/Cappuccino.dart';
 import 'package:coffee_project/core/Classes/coffee_beans.dart';
 import 'package:coffee_project/features/auth/login_page.dart';
@@ -30,6 +32,9 @@ class AppRouter {
 case AppRoutes.londing:
         return MaterialPageRoute(builder: (_) =>  LandingPage(onLanguageChanged: onLanguageChanged));
 
+
+      case AppRoutes.admain:
+        return MaterialPageRoute(builder: (_) => const LoginadmainPage());
 
 
       case AppRoutes.login:
@@ -99,7 +104,7 @@ abstract class AppRoutes {
   static const String login = '/login';
   static const String register = '/register';
   static const String londing = '/londing';
-
+  static const String admain = '/admain';
 
   static const String mainLayout = '/mainLayout';
   static const String home = '/home';
